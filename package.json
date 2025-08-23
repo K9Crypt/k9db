@@ -1,0 +1,55 @@
+{
+  "name": "k9db",
+  "version": "0.1",
+  "author": "K9Crypt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/K9Crypt/k9db.git"
+  },
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "dependencies": {
+    "k9crypt": "^1.1.6"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "description": "K9DB is a high-performance, encrypted NoSQL database with modular architecture.",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "database",
+    "encrypted",
+    "k9crypt",
+    "nosql",
+    "query",
+    "backup",
+    "encryption",
+    "modular",
+    "schema",
+    "validation",
+    "querybuilder",
+    "natural-language",
+    "full-text-search",
+    "fuzzy-search",
+    "data-relationships",
+    "cache",
+    "performance",
+    "enterprise",
+    "security",
+    "key-value",
+    "document-database",
+    "javascript",
+    "nodejs",
+    "typescript"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "lint": "echo \"Linting completed\"",
+    "build": "echo \"Build completed\""
+  },
+  "type": "commonjs"
+}

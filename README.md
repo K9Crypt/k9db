@@ -1,4 +1,6 @@
-![Banner](https://www.upload.ee/image/18486349/K9DB_Banner.png)
+![Banner](https://www.upload.ee/image/18526544/k9crypt-database-banner-2.png)
+
+[Turkish Documentation](locales/tr/README.md) ・ [German Documentation](locales/de/README.md) ・ [Russian Documentation](locales/ru/README.md)
 
 # K9DB
 
@@ -7,11 +9,13 @@
 ## Features
 
 ### Security
+
 - Full encryption with **K9Crypt**
 - Secure data storage
 - Secret key management
 
 ### Modular Architecture
+
 - **Validation Module**: Schema and custom validation
 - **Query Module**: Advanced query system
 - **Backup Module**: Backup and restore
@@ -19,16 +23,24 @@
 - **QueryBuilder**: Fluent API for query building
 
 ### Performance
+
 - Query caching system
 - Optimized data structures
 - Lazy loading support
 
 ### Advanced Querying
+
 - Powerful query operators
 - Natural language query support
 - Full-text search
 - Fuzzy matching
 - Nested path querying
+
+### Scalability and High Availability
+
+- **Cluster Management**: Foundation for sharding and replication.
+- **Advanced Caching**: Configurable in-memory caching (e.g., LRU).
+- **Health Monitoring**: Automatic health checks for cluster nodes.
 
 ## Installation
 
@@ -72,6 +84,7 @@ const youngUsers = db.query({
 ### Module Descriptions
 
 #### ValidationModule
+
 Schema definition and data validation operations.
 
 ```javascript
@@ -89,15 +102,13 @@ db.addValidator('emailValidator', (value) => {
 ```
 
 #### QueryModule
+
 Advanced querying and search operations.
 
 ```javascript
 // Complex queries
 const results = db.query({
-  $and: [
-    { age: { $gte: 18 } },
-    { status: { $in: ['active', 'pending'] } }
-  ]
+  $and: [{ age: { $gte: 18 } }, { status: { $in: ['active', 'pending'] } }]
 });
 
 // Text search
@@ -108,6 +119,7 @@ const found = db.search('admin', {
 ```
 
 #### LinkModule
+
 Establishing and managing relationships between data.
 
 ```javascript
@@ -122,6 +134,7 @@ const isLinked = db.isLinked('user1', 'profile1');
 ```
 
 #### BackupModule
+
 Database backup and restore operations.
 
 ```javascript
@@ -137,38 +150,57 @@ await db.restore('./backups/backup1.db');
 const backups = db.listBackups('./backups/');
 ```
 
+#### ClusterManager
+
+Manages nodes, sharding, and replication in a distributed environment.
+
+#### CacheModule
+
+Provides an advanced, policy-based in-memory cache (e.g., LRU) for frequently accessed data.
+
+#### MonitoringModule
+
+Performs health checks on cluster nodes and collects performance metrics.
+
 ## API Documentation
 
 ### Basic Operations
 
 #### `new K9DB(config)`
+
 Creates a new database instance.
 
 ```javascript
 const db = new K9DB({
-  path: './data/app.db',    // Database file path
-  secretKey: 'secret123'    // Encryption key
+  path: './data/app.db', // Database file path
+  secretKey: 'your-secret-key-here' // Encryption key
 });
 ```
 
 #### `await db.init()`
+
 Initializes the database and loads existing data.
 
 #### `await db.set(key, value)`
+
 Stores a key-value pair.
 
 #### `db.get(key)`
+
 Retrieves value by key.
 
 #### `await db.delete(key)`
+
 Deletes the key and its value.
 
 #### `db.exists(key)`
+
 Checks if the key exists.
 
 ### Schema Operations
 
 #### `db.setSchema(key, schema)`
+
 Defines a schema for the key.
 
 ```javascript
@@ -181,6 +213,7 @@ db.setSchema('product', {
 ```
 
 #### Schema Properties
+
 - `type`: 'string', 'number', 'boolean', 'array', 'object', 'date'
 - `required`: Required field check
 - `min`: Minimum value/length
@@ -195,41 +228,118 @@ db.setSchema('product', {
 
 ```javascript
 // Comparison
-{ field: { $eq: value } }        // Equal
-{ field: { $ne: value } }        // Not equal
-{ field: { $gt: value } }        // Greater than
-{ field: { $gte: value } }       // Greater than or equal
-{ field: { $lt: value } }        // Less than
-{ field: { $lte: value } }       // Less than or equal
+{
+  field: {
+    $eq: value;
+  }
+} // Equal
+{
+  field: {
+    $ne: value;
+  }
+} // Not equal
+{
+  field: {
+    $gt: value;
+  }
+} // Greater than
+{
+  field: {
+    $gte: value;
+  }
+} // Greater than or equal
+{
+  field: {
+    $lt: value;
+  }
+} // Less than
+{
+  field: {
+    $lte: value;
+  }
+} // Less than or equal
 
 // Array operators
-{ field: { $in: [val1, val2] } }     // In
-{ field: { $nin: [val1, val2] } }    // Not in
-{ field: { $all: [val1, val2] } }    // Contains all
+{
+  field: {
+    $in: [val1, val2];
+  }
+} // In
+{
+  field: {
+    $nin: [val1, val2];
+  }
+} // Not in
+{
+  field: {
+    $all: [val1, val2];
+  }
+} // Contains all
 
 // String operators
-{ field: { $contains: 'text' } }     // Contains
-{ field: { $startsWith: 'pre' } }    // Starts with
-{ field: { $endsWith: 'suf' } }      // Ends with
-{ field: { $regex: /pattern/ } }     // Regex match
+{
+  field: {
+    $contains: 'text';
+  }
+} // Contains
+{
+  field: {
+    $startsWith: 'pre';
+  }
+} // Starts with
+{
+  field: {
+    $endsWith: 'suf';
+  }
+} // Ends with
+{
+  field: {
+    $regex: /pattern/;
+  }
+} // Regex match
 
 // Logical operators
-{ $and: [cond1, cond2] }         // And
-{ $or: [cond1, cond2] }          // Or
-{ $not: condition }              // Not
-{ $nor: [cond1, cond2] }         // Nor
+{
+  $and: [cond1, cond2];
+} // And
+{
+  $or: [cond1, cond2];
+} // Or
+{
+  $not: condition;
+} // Not
+{
+  $nor: [cond1, cond2];
+} // Nor
 
 // Special operators
-{ field: { $exists: true } }     // Field exists
-{ field: { $type: 'string' } }   // Type check
-{ field: { $size: 5 } }          // Length check
-{ field: { $fuzzy: 'text' } }    // Fuzzy text
+{
+  field: {
+    $exists: true;
+  }
+} // Field exists
+{
+  field: {
+    $type: 'string';
+  }
+} // Type check
+{
+  field: {
+    $size: 5;
+  }
+} // Length check
+{
+  field: {
+    $fuzzy: 'text';
+  }
+} // Fuzzy text
 ```
 
 ### QueryBuilder Usage
 
 ```javascript
-const results = db.queryBuilder()
+const results = db
+  .queryBuilder()
   .where('age', '>', 18)
   .where('status', 'active')
   .sort('name', 1)
@@ -237,7 +347,8 @@ const results = db.queryBuilder()
   .execute();
 
 // Complex queries with Fluent API
-const complexQuery = db.queryBuilder()
+const complexQuery = db
+  .queryBuilder()
   .where('category', 'electronics')
   .and({ price: { $lt: 1000 } }, { inStock: true })
   .or({ featured: true }, { onSale: true })
@@ -271,8 +382,8 @@ await db.backup('./manual-backup.db', {
 
 // Cleanup backups
 const cleaned = db.cleanupBackups({
-  maxAge: 30,     // Older than 30 days
-  maxCount: 10,   // Maximum 10 backups
+  maxAge: 30, // Older than 30 days
+  maxCount: 10, // Maximum 10 backups
   directory: './backups/'
 });
 
@@ -303,6 +414,67 @@ const integrity = db.validateLinkIntegrity();
 if (integrity.length > 0) {
   db.repairLinkIntegrity();
 }
+```
+
+### Scalability and Cluster Configuration
+
+K9DB includes foundational support for horizontal scaling, caching, and monitoring. You can configure these features during database initialization.
+
+```javascript
+const K9DB = require('k9db');
+
+const db = new K9DB({
+  path: './data/clustered-app.db',
+  secretKey: 'your-secret-key-here',
+
+  // Cache configuration
+  cache: {
+    policy: 'lru', // Least Recently Used
+    maxSize: 1000 // Max number of items in cache
+  },
+
+  // Monitoring configuration
+  monitoring: {
+    enabled: true,
+    interval: 5000 // Check node health every 5 seconds
+  },
+
+  // Cluster configuration
+  cluster: {
+    shardCount: 4 // Number of shards for data distribution
+  }
+});
+
+await db.init();
+
+// You can access the modules directly for advanced operations
+// (Note: Direct access should be used with caution)
+db.clusterManager.addNode('node-1', '192.168.1.100');
+db.clusterManager.addNode('node-2', '192.168.1.101');
+
+// Use the cache
+db.cacheModule.set('my-special-key', { value: 'super-fast-access' });
+const cachedItem = db.cacheModule.get('my-special-key');
+console.log('Retrieved from cache:', cachedItem);
+
+// Check system stats to see the new modules in action
+// Use a timeout to allow the monitoring module to run
+setTimeout(() => {
+  const stats = db.getStats();
+  console.log(stats);
+  /*
+  Output might look like:
+  {
+    totalKeys: 0,
+    // ... other stats
+    mainCacheSize: 1,
+    mainCachePolicy: 'lru',
+    clusterNodes: 2,
+    monitoringStatus: 'active',
+    // ... other stats
+  }
+  */
+}, 6000);
 ```
 
 ## License

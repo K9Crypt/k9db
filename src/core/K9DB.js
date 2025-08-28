@@ -1,7 +1,6 @@
 const K9Crypt = require('k9crypt');
 const fs = require('fs');
 const path = require('path');
-
 const DatabaseUtils = require('../utils/DatabaseUtils');
 const TypeUtils = require('../utils/TypeUtils');
 const ValidationModule = require('../modules/ValidationModule');
@@ -9,6 +8,11 @@ const QueryModule = require('../modules/QueryModule');
 const BackupModule = require('../modules/BackupModule');
 const LinkModule = require('../modules/LinkModule');
 const QueryBuilder = require('../modules/QueryBuilder');
+const ClusterManager = require('../modules/ClusterManager');
+const CacheModule = require('../modules/CacheModule');
+const QueryExecutor = require('../modules/QueryExecutor');
+const LoadBalancer = require('../modules/LoadBalancer');
+const MonitoringModule = require('../modules/MonitoringModule');
 
 class K9DB {
   constructor(config) {
@@ -23,6 +27,16 @@ class K9DB {
     this.queryModule = new QueryModule();
     this.backupModule = new BackupModule(this.databasePath, this.encryptor);
     this.linkModule = new LinkModule();
+
+    this.clusterManager = new ClusterManager(config.cluster || {});
+    this.cacheModule = new CacheModule(config.cache || {});
+    this.queryExecutor = new QueryExecutor(this.clusterManager);
+    this.loadBalancer = new LoadBalancer(this.clusterManager);
+    this.monitoringModule = new MonitoringModule(this.clusterManager);
+
+    if (config.monitoring && config.monitoring.enabled) {
+      this.monitoringModule.startMonitoring(config.monitoring.interval);
+    }
   }
 
   async loadDatabase() {
@@ -314,7 +328,13 @@ class K9DB {
       schemas: Object.keys(this.validationModule.getAllSchemas()).length,
       validators: Object.keys(this.validationModule.getAllValidators()).length,
       links: Object.keys(this.linkModule.getAllLinks()).length,
-      cacheSize: this.queryModule.getCacheSize(),
+      queryCacheSize: this.queryModule.getCacheSize(),
+      mainCacheSize: this.cacheModule.cache.size,
+      mainCachePolicy: this.cacheModule.policy,
+      clusterNodes: this.clusterManager.nodes.size,
+      monitoringStatus: this.monitoringModule.intervalId
+        ? 'active'
+        : 'inactive',
       databasePath: this.databasePath,
       isInitialized: this.isInitialized
     };

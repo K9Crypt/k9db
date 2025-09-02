@@ -1,6 +1,6 @@
 {
   "name": "k9db",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "K9Crypt",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "main": "src/index.js",
   "module": "src/index.js",
   "dependencies": {
-    "k9crypt": "^1.1.6"
+    "k9crypt": "^1.1.7"
   },
   "devDependencies": {
     "@types/bun": "latest"
